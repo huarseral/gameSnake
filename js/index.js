@@ -18,7 +18,7 @@ import {
     setupFullscreenChangeListener
 } from './ui.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoad', () => {
     // Show loader
     const loaderOverlay = document.getElementById('loaderOverlay');
 
