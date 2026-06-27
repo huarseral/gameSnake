@@ -18,7 +18,7 @@ import {
     setupFullscreenChangeListener
 } from './ui.js';
 
-document.addEventListener('DOMContentLoad', () => {
+document.addEventListener('DOMContentLoaded', () => {
     // Show loader
     const loaderOverlay = document.getElementById('loaderOverlay');
 
@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoad', () => {
 
     // Initialize renderer
     const canvas = document.getElementById('gameCanvas');
+    const renderer = initRenderer(canvas);
 
     // Initialize food
     gameState.food = generateFood(gameState.snake);
