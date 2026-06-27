@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake - Juego</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        .snake-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .snake-title {
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.8), 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            z-index: 10;
+        }
+        .overlay.hidden {
+            display: none;
+        }
+        #gameCanvas {
+            background: #111;
+            display: block;
+        }
+        .canvas-wrapper {
+            position: relative;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+        .loader-overlay.hidden {
+            display: none;
+        }
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(74, 222, 128, 0.3);
+            border-top: 4px solid #4ade80;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loader-text {
+            color: #4ade80;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-blue-950 min-h-screen flex items-center justify-center p-4">
+    <!-- Loader Overlay -->
+    <div id="loaderOverlay" class="loader-overlay">
+        <div class="loader"></div>
+        <p class="loader-text">CARGANDO</p>
+    </div>
+
+    <div class="snake-container">
+        <div class="bg-gray-800 rounded-xl shadow-2xl p-8">
+            <!-- Título -->
+            <h1 class="text-white font-bold text-5xl text-center mb-2 snake-title">SNAKE</h1>
+            <p class="text-gray-400 text-center mb-6">Clásico juego de serpiente</p>
+
+            <!-- Score, High Score y Botón Fullscreen -->
+            <div class="flex justify-between items-center mb-6 px-4">
+                <div>
+                    <p class="text-gray-400 text-sm">SCORE</p>
+                    <p class="text-white text-2xl font-bold" id="scoreDisplay">0</p>
+                </div>
+                <button id="fullscreenBtn" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition flex items-center gap-2">
+                    <span id="fullscreenIcon">🖥️</span>
+                    <span id="fullscreenText">Fullscreen</span>
+                </button>
+                <div class="text-right">
+                    <p class="text-gray-400 text-sm">HIGH SCORE</p>
+                    <p class="text-white text-2xl font-bold" id="highScoreDisplay">0</p>
+                </div>
+            </div>
+
+            <!-- Canvas -->
+            <div class="canvas-wrapper mb-6">
+                <canvas id="gameCanvas" width="800" height="800" class="border-2 border-green-500 rounded"></canvas>
+
+                <!-- Overlay Start -->
+                <div id="startOverlay" class="overlay">
+                    <p class="text-white text-3xl font-bold mb-4">Presiona ESPACIO para jugar</p>
+                    <p class="text-gray-300 text-sm">Usa flechas o WASD para moverte</p>
+                </div>
+
+                <!-- Overlay Paused -->
+                <div id="pauseOverlay" class="overlay hidden">
+                    <p class="text-white text-3xl font-bold">⏸ PAUSADO</p>
+                    <p class="text-gray-300 text-sm mt-2">Presiona ESPACIO para continuar</p>
+                </div>
+
+                <!-- Overlay Game Over -->
+                <div id="gameOverOverlay" class="overlay hidden">
+                    <p class="text-red-500 text-3xl font-bold mb-4">¡GAME OVER!</p>
+                    <div class="text-center mb-6">
+                        <p class="text-gray-300 text-sm">Puntuación Final</p>
+                        <p class="text-white text-3xl font-bold" id="finalScore">0</p>
+                    </div>
+                    <button id="restartBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition">
+                        Jugar de Nuevo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Instrucciones -->
+            <div class="bg-gray-700 rounded p-4 text-gray-300 text-sm">
+                <p class="mb-2"><span class="text-green-400 font-bold">⌨️ Controles:</span></p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li>Flechas o WASD para moverte</li>
+                    <li>ESPACIO para pausar/reanudar o empezar</li>
+                    <li>Toca y arrastra en móvil para cambiar dirección</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>
